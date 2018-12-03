@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -15,18 +16,30 @@ namespace PerfectPitch
 {
     public partial class Form2 : Form
     {
-        string sounds = @"../../sounds/";
+        string folder_sounds = @"../../sounds/";
+    
+        string low;
+        string med;
+        string high;
+
+        string sound_correct;
+        string sound_incorrect;
+
         int _level;
+        string instr = "Piano/"; // this needs to be passed at some point probably
         List<Button> buttons = new List<Button>();
         List<string> notes = new List<string>();
+        List<string> button_texts = new List<string>();
+        List<int> played_sounds = new List<int>();
+
         int counter = 0;
         int score = 0;
         int note_check = -1;
         bool feedback; // toggle feedback
         Random r = new Random();
         SoundPlayer p = new SoundPlayer();
+        SoundPlayer q = new SoundPlayer();
         Stopwatch sw = new Stopwatch();
-        //System.Timers.Timer t = new System.Timers.Timer();
 
         public Form2(int level)
         {
@@ -42,7 +55,14 @@ namespace PerfectPitch
             else
                 feedback = true;
 
+            low = folder_sounds + instr + @"Low/";
+            med = folder_sounds + instr + @"Middle/";
+            high = folder_sounds + instr + @"High/";
+
+            sound_correct = folder_sounds + "correct.wav";
+            sound_incorrect = folder_sounds + "incorrect.wav";
             return;
+
 
         }
         private void timeElapsed(object sender, EventArgs e)
@@ -69,15 +89,20 @@ namespace PerfectPitch
         {
             if (_level == 1 || _level == 2)
                 Level1();
-
+            if (_level == 3 || _level == 4)
+                Level3();
             return;
         }
 
         private void answerClick(object sender, EventArgs e)
         {
             string answer = (sender as Button).Name;
+            bool correct = false;
 
-            if (notes[note_check].Equals(answer))
+            if (notes[note_check].Contains(answer.Replace("#","+") + "."))
+                correct = true;
+
+            if (correct)
             {
                 score++;
                 feedBack(1);
@@ -85,9 +110,12 @@ namespace PerfectPitch
             else
                 feedBack(0);
 
-
+            Debug.WriteLine(counter);
             if (counter == 10)
+            {
+                toggleTimer(0);
                 gameOver();
+            }
             else
                 playSound();
 
@@ -102,14 +130,16 @@ namespace PerfectPitch
             if (correct == 1)
             {
                 label_feedback.Text = ":)";
-                label_feedback.BackColor = Color.Green;
-                label_feedback.ForeColor = Color.White;
+                q.SoundLocation = sound_correct;
+                q.Load();
+                q.PlaySync();
             }
             else
             {
                 label_feedback.Text = ":(";
-                label_feedback.BackColor = Color.Red;
-                label_feedback.ForeColor = Color.White;
+                q.SoundLocation = sound_incorrect;
+                q.Load();
+                q.PlaySync();
             }
             return;
         }
@@ -129,44 +159,62 @@ namespace PerfectPitch
             int X = x0 = 5;
             int y;
             int x = y = 52;
-
-            foreach (string s in notes)
+            int col_count = 0;
+            foreach (string s in button_texts)
             {
-                
-                string text = s.Split('-')[1];
-                int end = text.IndexOf(".");
-                text = text.Substring(1, end - 1);
-                text = text.Replace('+', '#');
-
                 Button b = new Button();
                 b.Location = new Point(X, Y);
                 b.Size = new Size(x, y);
 
                 b.Name = s;
-                b.Text = text;
+                b.Text = s;
                 b.Font = new Font(b.Font.FontFamily, (float)15.75);
                 b.Click += new EventHandler(this.answerClick);
                 group_buttons.Controls.Add(b);
                 buttons.Add(b);
 
                 X += x;
+                col_count++;
+
+                if (col_count == 6)
+                    Y += y;
             }
             return;
 
         }
-        private void playSound()
-        {
-            toggleTimer(0);
 
+        int getNextSound()
+        {
             int next = r.Next(0, notes.Count);
-            if (note_check == next)
+
+            // this needs some work
+            if (played_sounds.Contains(next))
             {
                 int change = r.Next(0, 10);
 
                 if (change <= 8)
-                    while (note_check == next)
+                {
+                    int cnt = 0;
+                    while (played_sounds.Contains(next))
+                    {
                         next = r.Next(0, notes.Count);
+                        cnt++;
+
+                        if (cnt > 10)
+                            break;
+                    }
+                }
             }
+
+            played_sounds.Add(next);
+            return next;
+        }
+
+        private void playSound()
+        {
+            toggleTimer(0);
+
+            int next = getNextSound();
 
             Debug.WriteLine(notes[next]);
             note_check = next;
@@ -202,22 +250,50 @@ namespace PerfectPitch
         }
         private void Level1()
         {
-            notes.Clear();
-            buttons.Clear();
-            score = 0;
-            counter = 0;
+            Reset();
 
-            string E = String.Format(@"{0}{1}", sounds, @"Piano/17 - E.wav");
-            string F = String.Format(@"{0}{1}", sounds, @"Piano/18 - F.wav");
-            string Fs = String.Format(@"{0}{1}", sounds, @"Piano/19 - F+.wav");
+            notes.Add(med + "E.wav");
+            notes.Add(med + "F.wav");
+            notes.Add(med + "F+.wav");
 
-            notes.Add(E);
-            notes.Add(F);
-            notes.Add(Fs);
+            button_texts.Add("E");
+            button_texts.Add("F");
+            button_texts.Add("F#");
 
             makeButtons();
             playSound();
             return;
+        }
+        private void Level3()
+        {
+            Reset();
+            notes.Add(low + "E.wav");
+            notes.Add(low + "F.wav");
+            notes.Add(low + "F+.wav");
+            notes.Add(med + "E.wav");
+            notes.Add(med + "F.wav");
+            notes.Add(med + "F+.wav"); 
+            notes.Add(high + "E.wav");
+            notes.Add(high + "F.wav");
+            notes.Add(high + "F+.wav");
+
+            button_texts.Add("E");
+            button_texts.Add("F");
+            button_texts.Add("F#");
+            makeButtons();
+            playSound();
+            return;
+        }
+
+        private void Reset()
+        {
+            notes.Clear();
+            buttons.Clear();
+            button_texts.Clear();
+            score = 0;
+            counter = 0;
+            toggleTimer(0);
+            played_sounds.Clear();
         }
 
         private void timer_Tick(object sender, EventArgs e)
