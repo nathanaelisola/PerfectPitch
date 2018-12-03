@@ -34,6 +34,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_save = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,21 +81,32 @@
             // menu_save
             // 
             this.menu_save.Name = "menu_save";
-            this.menu_save.Size = new System.Drawing.Size(252, 30);
+            this.menu_save.Size = new System.Drawing.Size(133, 30);
             this.menu_save.Text = "Save";
             // 
             // menu_exit
             // 
             this.menu_exit.Name = "menu_exit";
-            this.menu_exit.Size = new System.Drawing.Size(252, 30);
+            this.menu_exit.Size = new System.Drawing.Size(133, 30);
             this.menu_exit.Text = "Exit";
             this.menu_exit.Click += new System.EventHandler(this.menu_exit_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(23, 224);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(184, 69);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Level 2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(239, 450);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
@@ -116,6 +128,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menu_save;
         private System.Windows.Forms.ToolStripMenuItem menu_exit;
+        private System.Windows.Forms.Button button2;
     }
 }
 
