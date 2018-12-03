@@ -22,6 +22,7 @@ namespace PerfectPitch
         int counter = 0;
         int score = 0;
         int note_check = -1;
+        bool feedback; // toggle feedback
         Random r = new Random();
         SoundPlayer p = new SoundPlayer();
         Stopwatch sw = new Stopwatch();
@@ -34,9 +35,12 @@ namespace PerfectPitch
             label_level.Text = String.Format("Level {0}",level);
             _level = level;
             label_feedback.Text = "";
+            label_question.Text = "";
 
-            if (_level == 1)
-                Level1();
+            if (level % 2 == 0)
+                feedback = false;
+            else
+                feedback = true;
 
             return;
 
@@ -63,7 +67,7 @@ namespace PerfectPitch
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (_level == 1)
+            if (_level == 1 || _level == 2)
                 Level1();
 
             return;
@@ -91,6 +95,10 @@ namespace PerfectPitch
         }
         private void feedBack(int correct)
         {
+            // no feedback sometimes
+            if (!feedback)
+                return;
+
             if (correct == 1)
             {
                 label_feedback.Text = ":)";
