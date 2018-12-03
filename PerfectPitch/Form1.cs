@@ -12,7 +12,6 @@ namespace PerfectPitch
 {
     public partial class Form1 : Form
     {
-        int num_buttons = 2;
         public Form1()
         {
             InitializeComponent();
@@ -43,6 +42,11 @@ namespace PerfectPitch
         private void button2_Click(object sender, EventArgs e)
         {
             button_Click(2);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            button_Click(3);
         }
     }
 }
