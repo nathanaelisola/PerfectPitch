@@ -25,7 +25,11 @@ namespace PerfectPitch
         string sound_correct;
         string sound_incorrect;
 
+        enum difficulties { Easy, Hard };
+
+        int difficulty = 0; // easy default
         int _level;
+
         string instr = "Piano/"; // this needs to be passed at some point probably
         List<Button> buttons = new List<Button>();
         List<string> notes = new List<string>();
@@ -41,11 +45,23 @@ namespace PerfectPitch
         SoundPlayer q = new SoundPlayer();
         Stopwatch sw = new Stopwatch();
 
-        public Form2(int level)
+        HashSet<int> LEVELS = new HashSet<int>();
+
+        public int Difficulty
+        {
+            get { return difficulty; }
+            set
+            {
+                difficulty = value;
+            }
+        }
+
+        public Form2(HashSet<int> levels, int level)
         {
             InitializeComponent();
-            //t.Elapsed += new ElapsedEventHandler(timeElapsed);
-            label_level.Text = String.Format("Level {0}",level);
+
+            LEVELS = levels;
+            label_level.Text = String.Format("Level {0} - {1}",level, (difficulties)difficulty);
             _level = level;
             label_feedback.Text = "";
             label_question.Text = "";
@@ -65,6 +81,14 @@ namespace PerfectPitch
 
 
         }
+
+        public void RefreshDisplay()
+        {
+            label_level.Text = String.Format("Level {0} - {1}", _level, (difficulties)difficulty);
+
+            return;
+        }
+
         private void timeElapsed(object sender, EventArgs e)
         {
             if (sw.Elapsed >= new TimeSpan(3))
@@ -78,7 +102,7 @@ namespace PerfectPitch
         {
             this.Hide();
             var location = this.Location;
-            var form1 = new Form1();
+            var form1 = new Form1(LEVELS);
             form1.FormClosed += (s, args) => this.Close();
             form1.Show();
             form1.Location = location;
@@ -110,7 +134,6 @@ namespace PerfectPitch
             else
                 feedBack(0);
 
-            Debug.WriteLine(counter);
             if (counter == 10)
             {
                 toggleTimer(0);
@@ -314,6 +337,17 @@ namespace PerfectPitch
         private void menu_exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            var location = this.Location;
+            var settings = new Settings(this);
+            //settings.FormClosed += (s, args) => this.Close();
+            settings.Show();
+            settings.Location = location;
+            return;
         }
     }
 }

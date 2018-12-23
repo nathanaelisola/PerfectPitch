@@ -43,6 +43,8 @@
             this.menu_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.label_question = new System.Windows.Forms.Label();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,7 +122,8 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menu_file});
+            this.menu_file,
+            this.optionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 33);
@@ -139,13 +142,13 @@
             // menu_save
             // 
             this.menu_save.Name = "menu_save";
-            this.menu_save.Size = new System.Drawing.Size(133, 30);
+            this.menu_save.Size = new System.Drawing.Size(252, 30);
             this.menu_save.Text = "Save";
             // 
             // menu_exit
             // 
             this.menu_exit.Name = "menu_exit";
-            this.menu_exit.Size = new System.Drawing.Size(133, 30);
+            this.menu_exit.Size = new System.Drawing.Size(252, 30);
             this.menu_exit.Text = "Exit";
             this.menu_exit.Click += new System.EventHandler(this.menu_exit_Click);
             // 
@@ -164,6 +167,21 @@
             this.label_question.Size = new System.Drawing.Size(141, 29);
             this.label_question.TabIndex = 8;
             this.label_question.Text = "placeholder";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(88, 29);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // Form2
             // 
@@ -205,5 +223,7 @@
         private System.Windows.Forms.ToolStripMenuItem menu_exit;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label label_question;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
