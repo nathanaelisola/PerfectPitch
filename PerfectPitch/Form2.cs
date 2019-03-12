@@ -25,12 +25,13 @@ namespace PerfectPitch
         string sound_correct;
         string sound_incorrect;
 
-        enum difficulties { Easy, Hard };
+        enum difficulties { Normal, Hard };
 
         int difficulty = 0; // easy default
         int _level;
+        int pitches = 3;
 
-        string instr = "Piano/"; // this needs to be passed at some point probably
+        string instr = "Piano"; // this needs to be passed at some point probably
         List<Button> buttons = new List<Button>();
         List<string> notes = new List<string>();
         List<string> button_texts = new List<string>();
@@ -71,9 +72,9 @@ namespace PerfectPitch
             else
                 feedback = true;
 
-            low = folder_sounds + instr + @"Low/";
-            med = folder_sounds + instr + @"Middle/";
-            high = folder_sounds + instr + @"High/";
+            low = folder_sounds + instr + @"/Low/";
+            med = folder_sounds + instr + @"/Middle/";
+            high = folder_sounds + instr + @"/High/";
 
             sound_correct = folder_sounds + "correct.wav";
             sound_incorrect = folder_sounds + "incorrect.wav";

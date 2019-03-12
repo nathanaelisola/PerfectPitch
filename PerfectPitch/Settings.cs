@@ -39,7 +39,7 @@ namespace PerfectPitch
             Controls.Add(l);
 
             Y += 25;
-            List<string> difficulties = new List<string>(){ "Easy", "Hard" };
+            List<string> difficulties = new List<string>(){ "Normal", "Hard" };
 
             ComboBox box = new ComboBox()
             {
